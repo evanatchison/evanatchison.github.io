@@ -63,7 +63,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -84,27 +84,67 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-state-mapping" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">State Mapping</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-state-mapping">    
+        <li>
+    <a class="dropdown-item" href="./chloropleth_map.html" rel="" target="">
+ <span class="dropdown-text">Analyzing the Relationship Between Median Income and Homeownership</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./Wisconsin.html" rel="" target="">
+ <span class="dropdown-text">Wisconsin Gerrymandering Map</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto">
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Evan Atchison</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chloropleth_map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyzing the Relationship Between Median Income and Homeownership</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Wisconsin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wisconsin Gerrymandering Map</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#evan-atchison" id="toc-evan-atchison" class="nav-link active" data-scroll-target="#evan-atchison">Evan Atchison</a>
+  <li><a href="#about" id="toc-about" class="nav-link active" data-scroll-target="#about">About</a>
   <ul class="collapse">
   <li><a href="#education" id="toc-education" class="nav-link" data-scroll-target="#education">Education</a></li>
   </ul></li>
@@ -119,7 +159,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-about-trestles">
   <div class="about-entity">
-    <img src="images/profilepic.jpg" class="about-image
+    <img src="images/Evan_R_Pic.webp" class="about-image
   round " style="height: 20em; width: 20em;">
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -140,8 +180,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
   </div>
   <div class="about-contents"><div id="intro-heading">
-<section id="evan-atchison" class="level2">
-<h2 data-anchor-id="evan-atchison">Evan Atchison</h2>
+<section id="about" class="level2">
+<h2 data-anchor-id="about">About</h2>
 <p>B.A. History Major, Statistics and Data Science Concentrator @ <a href="https://wp.stolaf.edu/">St.&nbsp;Olaf College</a></p>
 <section id="education" class="level3">
 <h3 data-anchor-id="education">Education</h3>

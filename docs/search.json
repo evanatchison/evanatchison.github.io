@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Evan Atchison",
@@ -14,10 +21,52 @@
     "text": "B.A. History Major, Statistics and Data Science Concentrator @ St. Olaf College\n\n\nBA in History with Statistics and Data Science concentration 2026 | St. Olaf College"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "Wisconsin.html",
+    "href": "Wisconsin.html",
+    "title": "Wisconsin Gerrymandering Map",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.4.4     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\nLinking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE\n\nLoading required package: maps\n\n\nAttaching package: 'maps'\n\n\nThe following object is masked from 'package:purrr':\n\n    map"
+  },
+  {
+    "objectID": "chloropleth_map.html",
+    "href": "chloropleth_map.html",
+    "title": "Analyzing the Relationship Between Median Income and Homeownership",
+    "section": "",
+    "text": "library(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.4.4     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(mdsr)   \nlibrary(viridis)\n\nLoading required package: viridisLite\n\nlibrary(ggplot2)\nlibrary(ggthemes)"
+  },
+  {
+    "objectID": "chloropleth_map.html#introduction",
+    "href": "chloropleth_map.html#introduction",
+    "title": "Analyzing the Relationship Between Median Income and Homeownership",
+    "section": "Introduction",
+    "text": "Introduction\nWith it becoming increasingly challenging for young workers to find homes, this plot attempts to discern a relationship between a state’s homeownership rate and its median income. This data comes from “state_stats” in the usdata package from r; the map comes from “map_data” in the maps package.\n\nstate_statistics &lt;- state_stats |&gt;\n  filter(state != \"District of Columbia\") |&gt;\n  mutate(state_name = str_squish(str_to_lower(as.character(state)))) |&gt;\n  right_join(us_states, by = c(\"state_name\" = \"region\"))\n\n\nstate_statistics |&gt;\n  ggplot(aes(x = long, y = lat, \n             group = group)) +\n  geom_polygon(aes(fill = med_income, alpha = homeownership)) +\n  labs(title = \"Relationship Between Homeownership and Median Income\", fill = \"Median Income\", alpha = \"Homeownership\") +\n  theme(axis.title.x = element_blank()) +\n  theme(axis.title.y = element_blank())"
+  },
+  {
+    "objectID": "chloropleth_map.html#analysis",
+    "href": "chloropleth_map.html#analysis",
+    "title": "Analyzing the Relationship Between Median Income and Homeownership",
+    "section": "Analysis",
+    "text": "Analysis\nIn this map, we see that there is no clear correlation between median income and homeownership rates in a state. This is most visible in the juxtaposition of West Virginia, the state with the second-lowest median income but highest homeownership rate, and Minnesota, the state with the second-highest homeownership but a much higher median income. We can also see lower-median income states like Missisippi and Maine also have compartively higher homeownership rates while California, New York, Massachusetts have much lower homeownership rates while simultaneously boasting high median incomes. With this, we can see that there may be other, more important factors that influence homeownership rates. New York and Massachusetts, two states with small land masses but booming economic centers, lack the size to accommodate adequate housing, meaning property prices are much higher and thus less desirable for aspiring homeowners. Furthermore, states on the West Coast have increasingly high standards of living, meaning property prices are also undesirable and unaffordable for a large part of these states’ populations. But, in states such as Minnesota, West Virginia, and Michigan, lower housing prices allow for greater homeownership as a greater percentage of the population can afford property. This demonstrates that property prices and land mass are two variable with greater influence on homeownership."
+  },
+  {
+    "objectID": "Wisconsin.html#introduction",
+    "href": "Wisconsin.html#introduction",
+    "title": "Wisconsin Gerrymandering Map",
+    "section": "Introduction",
+    "text": "Introduction\nRecently, the state of Wisconsin announced the redrawing of its legislative maps after a decade of guaranteed Republican control of the state legislature. This control was due to extreme gerrymandering that made it impossible for Democrats to have control in the state legislature. But, with the redrawing of districts, Wisconsin hopes to create districts that better reflect the true voting habits of its voters. For this project, we will be revisiting the old district lines of Wisconsin to see just how gerrymandered the state was. With this, we can see the necessity for change in Wisconsin’s district lines and also the dangers of gerrymandering as a whole. To do this, we will use the data set “results_house” from the fec16 library along with a projection map of Wisconsin’s districts.\n\nresults_house &lt;- results_house |&gt;\n  mutate(district = parse_number(district_id)) |&gt;\n  group_by(state, district) |&gt;\n  summarize(candidates = n(),\n            total_votes = sum(general_votes, na.rm = TRUE),\n            d_votes = sum(ifelse(party == \"DEM\", general_votes, 0), na.rm = TRUE),\n    r_votes = sum(ifelse(party == \"REP\", general_votes, 0), na.rm = TRUE),\n    .groups = \"drop\",\n    dem_prop = d_votes/total_votes,\n    winner = ifelse(d_votes &gt; r_votes, \"Democrat\", \"Republican\"))\n\n\nwis_results &lt;- results_house |&gt;\n  filter(state == \"WI\") \n\n\nwis_merged &lt;- wis_dist |&gt;\n  st_transform(4326) |&gt;\n  inner_join(wis_results, by = c(\"DISTRICT\" = \"district\"))\nhead(wis_merged, width = Inf)\n\n\nwisconsin_map &lt;- ggplot(data = wis_merged, aes(fill = winner)) +\n  annotation_map_tile(zoom = 6, type = \"osm\", progress = \"none\") + \n  geom_sf(alpha = .75) +\n  scale_fill_manual(\"Winner\", values = c(\"blue\", \"red\")) + \n  geom_sf_label(aes(label = DISTRICT), fill = \"white\") + \n  theme_void()\nwisconsin_map\n\nWarning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not\ngive correct results for longitude/latitude data\n\n\nLoading required namespace: raster"
+  },
+  {
+    "objectID": "Wisconsin.html#analysis",
+    "href": "Wisconsin.html#analysis",
+    "title": "Wisconsin Gerrymandering Map",
+    "section": "Analysis",
+    "text": "Analysis\nWith the overlay of the district on a map of Wisconsin, we can see how the gerrymandered lines operated. We can see this in the way lines were drawn in Milwaukee and Madison, Wisconsin’s two largest and most democratic cities. In zone 4, we see how an incredibly dense part of Milwaukee’s population, a great majority of which are Democrat, is grouped into a tiny district. Because of this, the surrounding zones incorporating the Milwaukee area ensure Republicans have more power in their vote as a high concentration of Democratic voters find themselves in zone 4 and not part of the other districts. Simiarlarly, Districts 2 and 3 employ similar strategies by clumping together a high volume of Democratic voters in Madison and Wisconsin’s western border into two districts to ensure easy wins for Democrats. With a majority of Democratic voters in only three districts, Wisconsin Republicans have, in essence, free paths to victory in the other five districts. Thus, the old district lines of Wisconsin ensured that the districts would always be 5 - 3 in favor of Republicans, a clear representation of the abuses of power gerrymandering can pose to the Democratic process. Wisconsin’s new districts lines provides hope for the future of the Democratic process in the state, which, as we can see in this map, has needed to change for a decade."
+  },
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "Evan Atchison",
+    "section": "",
+    "text": "B.A. History Major, Statistics and Data Science Concentrator @ St. Olaf College\n\n\nBA in History with Statistics and Data Science concentration 2026 | St. Olaf College"
   }
 ]

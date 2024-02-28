@@ -1,0 +1,91 @@
+---
+title: "Wisconsin Gerrymandering Map"
+sidebar: false
+format: 
+  html: default
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(mdsr)     
+library(sf) 
+library(ggspatial)
+library(mapproj)
+library(maps)
+```
+
+```{r, include = FALSE}
+devtools::install_github("baumer-lab/fec16")
+library(fec16)
+print(results_house, width = Inf)
+
+results_house <- results_house
+```
+
+## Introduction
+
+Recently, the state of Wisconsin announced the redrawing of its legislative maps after a decade of guaranteed Republican control of the state legislature. This control was due to extreme gerrymandering that made it impossible for Democrats to have control in the state legislature. But, with the redrawing of districts, Wisconsin hopes to create districts that better reflect the true voting habits of its voters. For this project, we will be revisiting the old district lines of Wisconsin to see just how gerrymandered the state was. With this, we can see the necessity for change in Wisconsin's district lines and also the dangers of gerrymandering as a whole. To do this, we will use the data set "results_house" from the fec16 library along with a projection map of Wisconsin's districts. 
+
+
+```{r}
+results_house <- results_house |>
+  mutate(district = parse_number(district_id)) |>
+  group_by(state, district) |>
+  summarize(candidates = n(),
+            total_votes = sum(general_votes, na.rm = TRUE),
+            d_votes = sum(ifelse(party == "DEM", general_votes, 0), na.rm = TRUE),
+    r_votes = sum(ifelse(party == "REP", general_votes, 0), na.rm = TRUE),
+    .groups = "drop",
+    dem_prop = d_votes/total_votes,
+    winner = ifelse(d_votes > r_votes, "Democrat", "Republican"))
+```
+
+```{r}
+wis_results <- results_house |>
+  filter(state == "WI") 
+```
+
+```{r, include = FALSE}
+src <- "http://cdmaps.polisci.ucla.edu/shp/districts113.zip"
+lcl_zip <- fs::path(tempdir(), "districts113.zip")
+download.file(src, destfile = lcl_zip)
+lcl_districts <- fs::path(tempdir(), "districts113")
+unzip(lcl_zip, exdir = lcl_districts)
+dsn_districts <- fs::path(lcl_districts, "districtShapes")
+
+districts <- st_read(dsn_districts, layer = "districts113") |>
+  mutate(DISTRICT = parse_number(as.character(DISTRICT)))
+head(districts, width = Inf)
+class(districts)
+```
+
+```{r, include = FALSE}
+wis_dist <- districts |>
+  filter(STATENAME == "Wisconsin")
+wis_dist |>
+  st_geometry() |>
+  plot(col = gray.colors(nrow(wis_dist)))
+```
+
+```{r, echo = TRUE, results = 'hide'}
+wis_merged <- wis_dist |>
+  st_transform(4326) |>
+  inner_join(wis_results, by = c("DISTRICT" = "district"))
+head(wis_merged, width = Inf)
+```
+
+```{r}
+wisconsin_map <- ggplot(data = wis_merged, aes(fill = winner)) +
+  annotation_map_tile(zoom = 6, type = "osm", progress = "none") + 
+  geom_sf(alpha = .75) +
+  scale_fill_manual("Winner", values = c("blue", "red")) + 
+  geom_sf_label(aes(label = DISTRICT), fill = "white") + 
+  theme_void()
+wisconsin_map
+```
+
+## Analysis
+
+With the overlay of the district on a map of Wisconsin, we can see how the gerrymandered lines operated. We can see this in the way lines were drawn in Milwaukee and Madison, Wisconsin's two largest and most democratic cities. In zone 4, we see how an incredibly dense part of Milwaukee's population, a great majority of which are Democrat, is grouped into a tiny district. Because of this, the surrounding zones incorporating the Milwaukee area ensure Republicans have more power in their vote as a high concentration of Democratic voters find themselves in zone 4 and not part of the other districts. Simiarlarly, Districts 2 and 3 employ similar strategies by clumping together a high volume of Democratic voters in Madison and Wisconsin's western border into two districts to ensure easy wins for Democrats. With a majority of Democratic voters in only three districts, Wisconsin Republicans have, in essence, free paths to victory in the other five districts. Thus, the old district lines of Wisconsin ensured that the districts would always be 5 - 3 in favor of Republicans, a clear representation of the abuses of power gerrymandering can pose to the Democratic process. Wisconsin's new districts lines provides hope for the future of the Democratic process in the state, which, as we can see in this map, has needed to change for a decade. 

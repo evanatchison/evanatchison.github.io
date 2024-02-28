@@ -1,0 +1,50 @@
+---
+title: "Analyzing the Relationship Between Median Income and Homeownership"
+sidebar: false
+format:
+  html: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r}
+library(tidyverse)
+library(mdsr)   
+library(viridis)
+library(ggplot2)
+library(ggthemes)
+```
+
+## Introduction
+
+With it becoming increasingly challenging for young workers to find homes, this plot attempts to discern a relationship between a state's homeownership rate and its median income. This data comes from "state_stats" in the usdata package from r; the map comes from "map_data" in the maps package. 
+
+
+```{r, include = FALSE}
+library(usdata)
+library(maps)
+us_states <- map_data("state")
+head(us_states)
+state_stats <- state_stats
+```
+
+```{r}
+state_statistics <- state_stats |>
+  filter(state != "District of Columbia") |>
+  mutate(state_name = str_squish(str_to_lower(as.character(state)))) |>
+  right_join(us_states, by = c("state_name" = "region"))
+```
+
+```{r}
+state_statistics |>
+  ggplot(aes(x = long, y = lat, 
+             group = group)) +
+  geom_polygon(aes(fill = med_income, alpha = homeownership)) +
+  labs(title = "Relationship Between Homeownership and Median Income", fill = "Median Income", alpha = "Homeownership") +
+  theme(axis.title.x = element_blank()) +
+  theme(axis.title.y = element_blank())
+```
+
+## Analysis
+
+In this map, we see that there is no clear correlation between median income and homeownership rates in a state. This is most visible in the juxtaposition of West Virginia, the state with the second-lowest median income but highest homeownership rate, and Minnesota, the state with the second-highest homeownership but a much higher median income. We can also see lower-median income states like Missisippi and Maine also have compartively higher homeownership rates while California, New York, Massachusetts have much lower homeownership rates while simultaneously boasting high median incomes. With this, we can see that there may be other, more important factors that influence homeownership rates. New York and Massachusetts, two states with small land masses but booming economic centers, lack the size to accommodate adequate housing, meaning property prices are much higher and thus less desirable for aspiring homeowners. Furthermore, states on the West Coast have increasingly high standards of living, meaning property prices are also undesirable and unaffordable for a large part of these states' populations. But, in states such as Minnesota, West Virginia, and Michigan, lower housing prices allow for greater homeownership as a greater percentage of the population can afford property. This demonstrates that property prices and land mass are two variable with greater influence on homeownership.
