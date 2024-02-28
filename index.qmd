@@ -3,7 +3,7 @@ title: "Evan Atchison"
 about:
   id: intro-heading
   template: trestles
-  image: images/profilepic.jpg
+  image: images/Evan_R_Pic.webp
   image-shape: round
   links:
     - icon: envelope
@@ -12,19 +12,16 @@ about:
       href: https://github.com/evanatchison
 ---
 
-:::{#intro-heading}
+::: {#intro-heading}
+## About
 
-## Evan Atchison
-
-B.A. History Major, Statistics and Data Science Concentrator @ [St. Olaf College](https://wp.stolaf.edu/)
+B.A. History Major, Statistics and Data Science Concentrator \@ [St. Olaf College](https://wp.stolaf.edu/)
 
 ### Education
 
-BA in History with Statistics and Data Science concentration<br>
-2026 | St. Olaf College
+BA in History with Statistics and Data Science concentration<br> 2026 \| St. Olaf College
 :::
 
 ### Get in Touch
 
-**Email**: <a href='mailto:atchis1@stolaf.edu'>atchis1@stolaf.edu</a>
-
+**Email**: <a href='mailto:atchis1@stolaf.edu'>atchis1\@stolaf.edu</a>
