@@ -6,14 +6,17 @@ website:
   title: "Evan Atchison"
   navbar:
     left:
-      - href: index.qmd
+      - file: index.qmd
         text: Home
       - about.qmd
-  page-footer:
-      left: |
-        &copy; Evan Atchison, 2024<br>
-        All content licensed under <i class='bi-badge-cc'></i>
-        [(CC BY-NC-SA 4.0)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+      - chloropleth_map.qmd
+      - Wisconsin.qmd
+      
+      
+page-footer:
+    left: |
+      &copy; Evan Atchison, 2024<br>
+      All content licensed under <i class='bi-badge-cc'></i>        [(CC BY-NC-SA 4.0)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
       right: |
         Site built with <a href='https://quarto.org/'>Quarto</a>
 
