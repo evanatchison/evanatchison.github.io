@@ -38,7 +38,7 @@ results_house <- results_house |>
             d_votes = sum(ifelse(party == "DEM", general_votes, 0), na.rm = TRUE),
     r_votes = sum(ifelse(party == "REP", general_votes, 0), na.rm = TRUE),
     .groups = "drop",
-    dem_prop = d_votes/total_votes,
+    r_prop = r_votes/total_votes,
     winner = ifelse(d_votes > r_votes, "Democrat", "Republican"))
 ```
 
@@ -84,6 +84,16 @@ wisconsin_map <- ggplot(data = wis_merged, aes(fill = winner)) +
   geom_sf_label(aes(label = DISTRICT), fill = "white") + 
   theme_void()
 wisconsin_map
+```
+
+
+```{r}
+  wisconsin_map + 
+  aes(fill = r_prop) + 
+  scale_fill_distiller(
+    "Proportion\nRepublican", 
+    palette = "RdBu", 
+    limits = c(0.2, 0.8))
 ```
 
 ## Analysis
