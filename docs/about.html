@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -119,18 +85,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./about.html" rel="" target="" aria-current="page">
- <span class="menu-text">About</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-state-mapping" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">State Mapping</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-state-mapping">    
+        <li>
+    <a class="dropdown-item" href="./chloropleth_map.html" rel="" target="">
+ <span class="dropdown-text">Analyzing the Relationship Between Median Income and Homeownership</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./chloropleth_map.html" rel="" target="">
- <span class="menu-text">Chloropleth Maps</span></a>
+        <li>
+    <a class="dropdown-item" href="./Wisconsin.html" rel="" target="">
+ <span class="dropdown-text">Wisconsin Gerrymandering Map</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./Wisconsin.html" rel="" target="">
- <span class="menu-text">Wisconsin Gerrymandering Map</span></a>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about-me" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">About Me</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-about-me">    
+        <li>
+    <a class="dropdown-item" href="./about.html" rel="" target="">
+ <span class="dropdown-text">About</span></a>
   </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto">
 </div>
@@ -143,7 +123,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#interests" id="toc-interests" class="nav-link" data-scroll-target="#interests">Interests</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -165,15 +154,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>About this site</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>I am a sophomore B.A. History Major at St.&nbsp;Olaf College in Northfield, Minnesota. While you might think to yourself, “A history major who has a coding webpage? How odd”, I also have a love for coding and am pursuing a Concentration in Statistics and Data Science alongside my History major. I hope to combine my two interests of history and data science to tell historical stories using data.</p>
+<section id="interests" class="level3">
+<h3 class="anchored" data-anchor-id="interests">Interests</h3>
+<p>I am a passionate sports fan and I hope to translate this passion into the work I do on this website. While primarily a soccer fanatic, I also have great interest in basketball and football analytics. Using this passion, I love creating models that not only allow sports fans and executives to reflect on what has created sporting success in the past, but also what is predicted for the future of sports. Influenced by my love of history, I am also interested in political and population data that tells the stories of human migrations and changes in global political landscapes.</p>
+<section id="contact" class="level4">
+<h4 class="anchored" data-anchor-id="contact">Contact</h4>
+<p>Want to reach out? Feel free to connect with me by email <a href="mailto:atchis1@stolaf.edu">atchis1@stolaf.edu</a></p>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -410,6 +404,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© Evan Atchison, 2024<br> All content licensed under <i class="bi-badge-cc"></i> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">(CC BY-NC-SA 4.0)</a></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">Site built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
 
 
 

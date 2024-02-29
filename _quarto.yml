@@ -8,9 +8,9 @@ website:
     search: true
     left:
       - file: index.qmd
-
         text: "Home"
       - sidebar:mini_project1
+      - sidebar:about
       
   sidebar:
     - id: mini_project1
@@ -18,6 +18,10 @@ website:
       contents:
         - chloropleth_map.qmd
         - Wisconsin.qmd
+    - id: about
+      title: "About Me"
+      contents: 
+        - about.qmd
       
   page-footer:
       left: |

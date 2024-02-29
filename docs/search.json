@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "I am a sophomore B.A. History Major at St. Olaf College in Northfield, Minnesota. While you might think to yourself, “A history major who has a coding webpage? How odd”, I also have a love for coding and am pursuing a Concentration in Statistics and Data Science alongside my History major. I hope to combine my two interests of history and data science to tell historical stories using data.\n\n\nI am a passionate sports fan and I hope to translate this passion into the work I do on this website. While primarily a soccer fanatic, I also have great interest in basketball and football analytics. Using this passion, I love creating models that not only allow sports fans and executives to reflect on what has created sporting success in the past, but also what is predicted for the future of sports. Influenced by my love of history, I am also interested in political and population data that tells the stories of human migrations and changes in global political landscapes.\n\n\nWant to reach out? Feel free to connect with me by email atchis1@stolaf.edu"
   },
   {
     "objectID": "index.html",
@@ -68,5 +68,12 @@
     "title": "Evan Atchison",
     "section": "",
     "text": "B.A. History Major, Statistics and Data Science Concentrator @ St. Olaf College\n\n\nBA in History with Statistics and Data Science concentration 2026 | St. Olaf College"
+  },
+  {
+    "objectID": "about.html#introduction",
+    "href": "about.html#introduction",
+    "title": "About",
+    "section": "",
+    "text": "I am a sophomore B.A. History Major at St. Olaf College in Northfield, Minnesota. While you might think to yourself, “A history major who has a coding webpage? How odd”, I also have a love for coding and am pursuing a Concentration in Statistics and Data Science alongside my History major. I hope to combine my two interests of history and data science to tell historical stories using data.\n\n\nI am a passionate sports fan and I hope to translate this passion into the work I do on this website. While primarily a soccer fanatic, I also have great interest in basketball and football analytics. Using this passion, I love creating models that not only allow sports fans and executives to reflect on what has created sporting success in the past, but also what is predicted for the future of sports. Influenced by my love of history, I am also interested in political and population data that tells the stories of human migrations and changes in global political landscapes.\n\n\nWant to reach out? Feel free to connect with me by email atchis1@stolaf.edu"
   }
 ]

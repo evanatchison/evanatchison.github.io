@@ -17,8 +17,7 @@ library(ggthemes)
 
 ## Introduction
 
-With it becoming increasingly challenging for young workers to find homes, this plot attempts to discern a relationship between a state's homeownership rate and its median income. This data comes from "state_stats" in the usdata package from r; the map comes from "map_data" in the maps package. 
-
+With it becoming increasingly challenging for young workers to find homes, this plot attempts to discern a relationship between a state's homeownership rate and its median income. This data comes from "state_stats" in the usdata package from r; the map comes from "map_data" in the maps package.
 
 ```{r, include = FALSE}
 library(usdata)
