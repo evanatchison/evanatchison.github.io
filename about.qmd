@@ -9,7 +9,7 @@ editor_options:
 
 ## Introduction
 
-I am a sophomore B.A. History Major at St. Olaf College in Northfield, Minnesota. While you might think to yourself, "A history major who has a coding webpage? How odd", I also have a love for coding and am pursuing a Concentration in Statistics and Data Science alongside my History major. I hope to combine my two interests of history and data science to tell historical stories using data. 
+I am a sophomore B.A. History Major at St. Olaf College in Northfield, Minnesota. While you might think to yourself, "A history major who has a coding webpage? How odd", I also have a love for coding and am pursuing a Concentration in Statistics and Data Science alongside my History major. I hope to combine my two interests of history and data science to tell historical stories using data. Outside of my studies, I am a percussionist in both the St. Olaf Band and St. Olaf Orchetra.
 
 ### Interests
 
