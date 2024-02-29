@@ -1,6 +1,6 @@
 ---
 title: "About"
-sidebar: false
+sidebar: true
 format:
   html: default
 editor_options:
