@@ -1,6 +1,6 @@
 ---
 title: "Wisconsin Gerrymandering Map"
-sidebar: true
+sidebar: false
 format: 
   html: default
 editor_options: 

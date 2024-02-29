@@ -1,6 +1,6 @@
 ---
 title: "Analyzing the Relationship Between Median Income and Homeownership"
-sidebar: true
+sidebar: false
 format:
   html: default
 editor_options:
