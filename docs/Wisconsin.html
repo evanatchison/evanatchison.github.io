@@ -134,6 +134,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
     </ul>
   </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about-me" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">About Me</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-about-me">    
+        <li>
+    <a class="dropdown-item" href="./about.html" rel="" target="">
+ <span class="dropdown-text">About</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto">
 </div>
@@ -202,7 +213,7 @@ The following object is masked from 'package:purrr':
 </div>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Recently, the state of Wisconsin announced the redrawing of its legislative maps after a decade of guaranteed Republican control of the state legislature. This control was due to extreme gerrymandering that made it impossible for Democrats to have control in the state legislature. But, with the redrawing of districts, Wisconsin hopes to create districts that better reflect the true voting habits of its voters. For this project, we will be revisiting the old district lines of Wisconsin to see just how gerrymandered the state was. With this, we can see the necessity for change in Wisconsin’s district lines and also the dangers of gerrymandering as a whole. To do this, we will use the data set “results_house” from the fec16 library along with a projection map of Wisconsin’s districts.</p>
+<p>Recently, the state of Wisconsin announced the redrawing of its legislative maps after a decade of guaranteed Republican control of the state legislature. This control was due to extreme gerrymandering that made it impossible for Democrats to have control in the state legislature. But, with the redrawing of districts, Wisconsin hopes to create districts that better reflect the true voting habits of its voters. For this project, we will be revisiting the old district lines of Wisconsin to see just how gerrymandered the state was. With this, we can see the necessity for change in Wisconsin’s district lines and also the dangers of gerrymandering as a whole. To do this, we will use the data set <em>results_house</em> from the <strong>fec16</strong> library along with a projection map of Wisconsin’s districts.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>results_house <span class="ot">&lt;-</span> results_house <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">district =</span> <span class="fu">parse_number</span>(district_id)) <span class="sc">|&gt;</span></span>
@@ -212,7 +223,7 @@ The following object is masked from 'package:purrr':
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">d_votes =</span> <span class="fu">sum</span>(<span class="fu">ifelse</span>(party <span class="sc">==</span> <span class="st">"DEM"</span>, general_votes, <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">r_votes =</span> <span class="fu">sum</span>(<span class="fu">ifelse</span>(party <span class="sc">==</span> <span class="st">"REP"</span>, general_votes, <span class="dv">0</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">dem_prop =</span> d_votes<span class="sc">/</span>total_votes,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">r_prop =</span> r_votes<span class="sc">/</span>total_votes,</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">winner =</span> <span class="fu">ifelse</span>(d_votes <span class="sc">&gt;</span> r_votes, <span class="st">"Democrat"</span>, <span class="st">"Republican"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
@@ -244,10 +255,29 @@ give correct results for longitude/latitude data</code></pre>
 <p><img src="Wisconsin_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  wisconsin_map <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">fill =</span> r_prop) <span class="sc">+</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Proportion</span><span class="sc">\n</span><span class="st">Republican"</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">"RdBu"</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Scale for fill is already present.
+Adding another scale for fill, which will replace the existing scale.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
+give correct results for longitude/latitude data</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Wisconsin_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
-<p>With the overlay of the district on a map of Wisconsin, we can see how the gerrymandered lines operated. We can see this in the way lines were drawn in Milwaukee and Madison, Wisconsin’s two largest and most democratic cities. In zone 4, we see how an incredibly dense part of Milwaukee’s population, a great majority of which are Democrat, is grouped into a tiny district. Because of this, the surrounding zones incorporating the Milwaukee area ensure Republicans have more power in their vote as a high concentration of Democratic voters find themselves in zone 4 and not part of the other districts. Simiarlarly, Districts 2 and 3 employ similar strategies by clumping together a high volume of Democratic voters in Madison and Wisconsin’s western border into two districts to ensure easy wins for Democrats. With a majority of Democratic voters in only three districts, Wisconsin Republicans have, in essence, free paths to victory in the other five districts. Thus, the old district lines of Wisconsin ensured that the districts would always be 5 - 3 in favor of Republicans, a clear representation of the abuses of power gerrymandering can pose to the Democratic process. Wisconsin’s new districts lines provides hope for the future of the Democratic process in the state, which, as we can see in this map, has needed to change for a decade.</p>
+<p>With the overlay of the district on a map of Wisconsin, we can see how the gerrymandered lines operated. We can see this in the way lines were drawn in Milwaukee and Madison, Wisconsin’s two largest and most democratic cities. In Zone 4, we see how an incredibly dense part of Milwaukee’s population, a great majority of which are Democrat, is grouped into a tiny district. Because of this, the surrounding zones incorporating the Milwaukee area ensure Republicans have more power in their vote as a high concentration of Democratic voters find themselves in Zone 4 and not part of the other districts. Simiarlarly, Districts 2 and 3 employ similar strategies by clumping together a high volume of Democratic voters in Madison and Wisconsin’s western border into two districts to ensure easy wins for Democrats. With a majority of Democratic voters in only three districts, Wisconsin Republicans have, in essence, free paths to victory in the other five districts. Thus, the old district lines of Wisconsin ensured that the districts would always be 5 - 3 in favor of Republicans, a clear representation of the abuses of power gerrymandering can pose to the Democratic process. Wisconsin’s new districts lines provides hope for the future of the Democratic process in the state, which, as we can see in this map, has needed to change for a decade.</p>
 
 
 </section>
@@ -487,6 +517,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© Evan Atchison, 2024<br> All content licensed under <i class="bi-badge-cc"></i> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">(CC BY-NC-SA 4.0)</a></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">Site built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
 
 
 

@@ -134,6 +134,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
     </ul>
   </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about-me" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">About Me</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-about-me">    
+        <li>
+    <a class="dropdown-item" href="./about.html" rel="" target="">
+ <span class="dropdown-text">About</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto">
 </div>
@@ -199,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>With it becoming increasingly challenging for young workers to find homes, this plot attempts to discern a relationship between a state’s homeownership rate and its median income. This data comes from “state_stats” in the usdata package from r; the map comes from “map_data” in the maps package.</p>
+<p>With it becoming increasingly challenging for young workers to find homes, this plot attempts to discern a relationship between a state’s homeownership rate and its median income. This data comes from <em>state_stats</em> in the <strong>usdata</strong> package from r; the map comes from <em>map_data</em> in the <strong>maps</strong> package.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>state_statistics <span class="ot">&lt;-</span> state_stats <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(state <span class="sc">!=</span> <span class="st">"District of Columbia"</span>) <span class="sc">|&gt;</span></span>
@@ -221,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
-<p>In this map, we see that there is no clear correlation between median income and homeownership rates in a state. This is most visible in the juxtaposition of West Virginia, the state with the second-lowest median income but highest homeownership rate, and Minnesota, the state with the second-highest homeownership but a much higher median income. We can also see lower-median income states like Missisippi and Maine also have compartively higher homeownership rates while California, New York, Massachusetts have much lower homeownership rates while simultaneously boasting high median incomes. With this, we can see that there may be other, more important factors that influence homeownership rates. New York and Massachusetts, two states with small land masses but booming economic centers, lack the size to accommodate adequate housing, meaning property prices are much higher and thus less desirable for aspiring homeowners. Furthermore, states on the West Coast have increasingly high standards of living, meaning property prices are also undesirable and unaffordable for a large part of these states’ populations. But, in states such as Minnesota, West Virginia, and Michigan, lower housing prices allow for greater homeownership as a greater percentage of the population can afford property. This demonstrates that property prices and land mass are two variable with greater influence on homeownership.</p>
+<p>In this map, we see that there is no clear correlation between median income and home ownership rates in a state. This is most visible in the juxtaposition of West Virginia, the state with the second-lowest median income but highest home ownership rate, and Minnesota, the state with the second-highest home ownership but a much higher median income. We can also see that lower-median income states like Mississippi and Maine have comparatively higher home ownership rates while California, New York, Massachusetts have much lower home ownership rates while simultaneously boasting high median incomes. With this, we can see that there may be other, more important factors that influence home ownership rates. New York and Massachusetts, two states with small land masses but booming economic centers, lack the size to accommodate adequate housing, meaning property prices are much higher and thus less desirable for aspiring homeowners. Furthermore, states on the West Coast have increasingly high standards of living, meaning property prices are undesirable and unaffordable for a large part of these states’ populations. But, in states such as Minnesota, West Virginia, and Michigan, lower housing prices allow for greater home ownership as a greater percentage of the population can afford property. This demonstrates that property prices and land mass are two variables with greater influence on home ownership.</p>
 
 
 </section>
