@@ -26,7 +26,7 @@ results_house <- results_house
 
 ## Introduction
 
-Recently, the state of Wisconsin announced the redrawing of its legislative maps after a decade of guaranteed Republican control of the state legislature. This control was due to extreme gerrymandering that made it impossible for Democrats to have control in the state legislature. But, with the redrawing of districts, Wisconsin hopes to create districts that better reflect the true voting habits of its voters. For this project, we will be revisiting the old district lines of Wisconsin to see just how gerrymandered the state was. With this, we can see the necessity for change in Wisconsin's district lines and also the dangers of gerrymandering as a whole. To do this, we will use the data set "results_house" from the fec16 library along with a projection map of Wisconsin's districts. 
+Recently, the state of Wisconsin announced the redrawing of its legislative maps after a decade of guaranteed Republican control of the state legislature. This control was due to extreme gerrymandering that made it impossible for Democrats to have control in the state legislature. But, with the redrawing of districts, Wisconsin hopes to create districts that better reflect the true voting habits of its voters. For this project, we will be revisiting the old district lines of Wisconsin to see just how gerrymandered the state was. With this, we can see the necessity for change in Wisconsin's district lines and also the dangers of gerrymandering as a whole. To do this, we will use the data set *results_house* from the **fec16** library along with a projection map of Wisconsin's districts. 
 
 
 ```{r}
