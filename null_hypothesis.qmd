@@ -1,0 +1,103 @@
+---
+title: "Do Free Throws Win Basketball Teams Games?"
+sidebar: false
+format: 
+  html: default
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+library(tidyverse)
+library(readr)
+```
+
+```{r}
+lsu_basketball <- read_csv("~/Downloads/LSU Basketball 2017-2018 - Sheet1.csv")
+view(lsu_basketball)
+```
+
+```{r}
+lsu_basketball <- lsu_basketball |>
+  mutate(ftpct = (FTM / FTA),
+         ftm_average = ifelse(FTM > 13, "Yes", "No"),
+         ftpct_average = ifelse(ftpct > .713, "Yes", "No"))
+
+view(lsu_basketball)
+```
+
+```{r}
+ftm_summary <- lsu_basketball |>
+  group_by(ftm_average) |>
+  summarize(win_rate = mean(Result == "Win"))
+
+lsu_diff <- ftm_summary[[2]][[2]] - ftm_summary[[2]][[1]]
+lsu_diff
+```
+
+```{r}
+ftm_simulation <- vector("double", 1000)
+for(i in 1:5000) {
+  ftm_summary <- lsu_basketball |>
+    mutate(ftm_average = sample(ftm_average)) |>
+    group_by(ftm_average) |>
+    summarize(win_rate = mean(Result == "Win"))
+   ftm_simulation[[i]] <- ftm_summary[[2]][[2]] - ftm_summary[[2]][[1]]
+}
+
+view(ftm_simulation)
+```
+
+```{r}
+ftm_simulated <- tibble(ftm_simulation = ftm_simulation)
+
+ggplot(ftm_simulated, aes(x = ftm_simulation)) +
+  geom_histogram(aes(y = ..density..), alpha = .4, fill = "black") +
+  geom_density(fill = "purple", alpha = .3) +
+  geom_vline(xintercept = lsu_diff, color = "yellow")
+```
+
+```{r}
+ftpct_summary <- lsu_basketball |>
+  group_by(ftpct_average) |>
+  summarize(win_ratepct = mean(Result == "Win"))
+
+ftpct_diff <- ftpct_summary[[2]][[2]] - ftpct_summary[[2]][[1]]
+ftpct_diff
+```
+
+```{r}
+ftpct_simulation <- vector("double", 1000)
+for(i in 1:5000) {
+  ftpct_summary <- lsu_basketball |>
+    mutate(ftpct_average = sample(ftpct_average)) |>
+    group_by(ftpct_average) |>
+    summarize(win_rate = mean(Result == "Win"))
+   ftpct_simulation[[i]] <- ftpct_summary[[2]][[2]] - ftpct_summary[[2]][[1]]
+}
+
+view(ftpct_simulation)
+```
+
+```{r}
+ftpct_simulated <- tibble(ftpct_simulation = ftpct_simulation)
+
+ggplot(ftpct_simulated, aes(x = ftpct_simulation)) +
+  geom_histogram(aes(y = ..density..), alpha = .4, fill = "black") +
+  geom_density(fill = "purple", alpha = .3) +
+  geom_vline(xintercept = lsu_diff, color = "yellow")
+```
+
+
+```{r}
+ftpcts <- function(data, var1, var2) {
+  mutate(ftpct = {{ var1 }} / {{ var2 }},
+         ftm_average = ifelse({{ var1 }} > 13, "Yes", "No"),
+        ftpct_average = ifelse(ftpct > .713, "Yes", "No"))
+}
+```
+
+```{r}
+lsu_basketball |> ftpcts(FTM, FTA)
+```
+

@@ -10,6 +10,7 @@ website:
       - file: index.qmd
         text: "Home"
       - sidebar:mini_project1
+      - sidebar:mini_project2
       - sidebar:about
       
   sidebar:
@@ -22,6 +23,10 @@ website:
       title: "About Me"
       contents: 
         - about.qmd
+    - id: mini_project2
+      title: "Null Hypothesis Test"
+      contents:
+        - null_hypothesis.qmd
       
   page-footer:
       left: |
