@@ -12,9 +12,21 @@ library(tidyverse)
 library(readr)
 ```
 
-```{r}
+## Introduction
+
+With March Madness upon (this is being published on Friday, March 22), we are being treated to three weeks of the very best college basketball. Whether it's a potential first-round upset or a nail-biting Final Four match-up, close games are a staple of March Madness; many argue it's what makes the tournament so great. Free throws can often be the most decisive factor in what teams wins a close game. Or are they? While there are many clichés about the importance of a team making free throws, I am taking a closer look at whether or not free throws really do win teams games. 
+
+### Methods
+
+An [article](https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century) by the NCAA says that in 2018 teams shot, on average, 19.6 free throws and made 14. With these averages in mind, I will be testing these conditions under the null hypothesis by analyzing the relationship between the win's of a team in an individual season and whether or not they made more than 14 free throws in a game. The goal of this test is to determine the importance, or potential lack thereof, of making free throws.
+
+### Data
+
+For this experiment, I have collected data from each regular season game from the 2017-2018 Louisiana State University (LSU) men's basketball season. The reason for this is LSU made 13.9 per game that season, very close to the overall NCAA average. In this data set, we have opponent faced, free throws made, free throws attempted, and the outcome of the game (Win or Loss).
+
+```{r, echo = FALSE}
 lsu_basketball <- read_csv("~/Downloads/LSU Basketball 2017-2018 - Sheet1.csv")
-view(lsu_basketball)
+print(lsu_basketball)
 ```
 
 ```{r}
@@ -26,6 +38,8 @@ lsu_basketball <- lsu_basketball |>
 view(lsu_basketball)
 ```
 
+Along with our initial variable, this code calculates the free throw percentage for each game. And, using the 'ifelse' statement within mutate, we can also see whether or not both free throws made and free throw percentage was better or worse than the national average (14 Free Throws Made and 71.4%); "Yes" denotes better than the average, "No" denotes worse than average.
+
 ```{r}
 ftm_summary <- lsu_basketball |>
   group_by(ftm_average) |>
@@ -35,8 +49,10 @@ lsu_diff <- ftm_summary[[2]][[2]] - ftm_summary[[2]][[1]]
 lsu_diff
 ```
 
+Conveniently, of the 30 regular season games LSU played, they made more than the average 15 times and less than the average 15 times. To calculate the win percentage of games in which they shot above or below the average, we find the mean of wins when grouped by the averages. Following this, "lsu_diff" is the different between the win percentage when LSU shot above the average and when LSU shot below the average. From the data, we can see that, shockingly, LSU won more games when making a below average quantity of free throws. 
+
 ```{r}
-ftm_simulation <- vector("double", 1000)
+ftm_simulation <- vector("double", 5000)
 for(i in 1:5000) {
   ftm_summary <- lsu_basketball |>
     mutate(ftm_average = sample(ftm_average)) |>
@@ -48,6 +64,8 @@ for(i in 1:5000) {
 view(ftm_simulation)
 ```
 
+As we are testing the condition of making free throws under the null hypothesis, the next step in our experiment is running simulations to create a null distribution. This code runs 5000 simulations, each simulation randomizing the difference of a team's win percentage when making the average and not making the average in a hypothetical season. 
+
 ```{r}
 ftm_simulated <- tibble(ftm_simulation = ftm_simulation)
 
@@ -55,9 +73,18 @@ ggplot(ftm_simulated, aes(x = ftm_simulation)) +
   geom_histogram(aes(y = ..density..), alpha = .4, fill = "black") +
   geom_density(fill = "purple", alpha = .3) +
   geom_vline(xintercept = lsu_diff, color = "yellow")
+
+p_value <- sum(ftm_simulation >= lsu_diff) / 5000
+p_value
 ```
 
-```{r}
+The final step is to plot our null distribution alongside our value for LSU's win differential using a vertical line. When looking at the graph, we can see the vertical line fits right with the null distribution, suggesting that the chance of LSU's win correlation with free throws is certainly possible under null conditions. We can find a mathematical value for this using the p-value, which equals .772. This is a gigantic p-value that means that 77.2% of the time would we expect to see this win differential under null conditions, meaning we absolutely can not reject the null hypothesis. To interpret this in context of basketball statistics, we can conclude that making more than the average number of free throws in a game may not do much to a team's probability of winning games. 
+
+### Other Uses
+
+While free throws made were not much a factor in LSU winning or losing games, we can use the code up above to see if other variables may have a greater impact on determining the results of LSU games by replacing free throws made with a different variable. In this case, I use free throw percentage, and its relation to the national average, to see if that has a greater correlation with game results.
+
+```{r, include = FALSE}
 ftpct_summary <- lsu_basketball |>
   group_by(ftpct_average) |>
   summarize(win_ratepct = mean(Result == "Win"))
@@ -66,8 +93,8 @@ ftpct_diff <- ftpct_summary[[2]][[2]] - ftpct_summary[[2]][[1]]
 ftpct_diff
 ```
 
-```{r}
-ftpct_simulation <- vector("double", 1000)
+```{r, include = FALSE}
+ftpct_simulation <- vector("double", 5000)
 for(i in 1:5000) {
   ftpct_summary <- lsu_basketball |>
     mutate(ftpct_average = sample(ftpct_average)) |>
@@ -79,25 +106,78 @@ for(i in 1:5000) {
 view(ftpct_simulation)
 ```
 
-```{r}
+```{r, echo = FALSE}
 ftpct_simulated <- tibble(ftpct_simulation = ftpct_simulation)
 
 ggplot(ftpct_simulated, aes(x = ftpct_simulation)) +
   geom_histogram(aes(y = ..density..), alpha = .4, fill = "black") +
   geom_density(fill = "purple", alpha = .3) +
   geom_vline(xintercept = lsu_diff, color = "yellow")
+p_value <- sum(ftpct_simulation >= ftpct_diff) / 5000
+p_value
 ```
 
+### Results
+
+Similar to the histogram comparing free throw average, we can see that LSU's differential with free throw percentage also falls right within the null distribution. When looking at the p-value, this is evident by the huge value. This allows us to conclude that making above the national average in free throws and free throw percentage does little to impact the results of college basketball games. 
 
 ```{r}
 ftpcts <- function(data, var1, var2) {
+  data |>
   mutate(ftpct = {{ var1 }} / {{ var2 }},
          ftm_average = ifelse({{ var1 }} > 13, "Yes", "No"),
         ftpct_average = ifelse(ftpct > .713, "Yes", "No"))
 }
+
+ftm_summary_func <- function(data, var1, var2) { 
+  ftm_summary <- data |>
+  group_by({{ var1 }}) |>
+    summarize(win_rate = mean({{ var2 }} == "Win"))
+}
+
+ft_histogram <- function(data, xvar, alpha = .4, var) {
+  ggplot(data = data, aes(x = xvar)) +
+    geom_histogram(aes(y = ..density..), alpha = alpha, fill = "black") +
+    geom_density(fill = "blue", alpha = alpha) +
+    geom_vline(xintercept = {{ var }}, color = "red")
+    
+}
+```
+
+```{r, echo = FALSE}
+mizzou_basketball <- read_csv("~/Downloads/Mizzou Basketball 2007-2008 - Sheet1.csv")
+print(mizzou_basketball)
 ```
 
 ```{r}
-lsu_basketball |> ftpcts(FTM, FTA)
+mizzou_basketball <- mizzou_basketball |> ftpcts(var1 = free_throws_made, var2 = free_throws_att)
+```
+
+```{r}
+mizzou_basketball <- mizzou_basketball |> ftpcts(var1 = free_throws_made, var2 = free_throws_att)
+
+ftm_summary <- ftm_summary_func(mizzou_basketball, ftm_average, result)
+miz_ftm_diff <- ftm_summary[[2]][[2]] - ftm_summary[[2]][[1]]
+miz_ftm_diff
+
+ftstat_simulation <- vector("double", 5000)
+for(i in 1:5000) {
+  ftpct_summary <- mizzou_basketball |>
+    mutate(ftm_average = sample(ftm_average)) |>
+    group_by(ftm_average) |>
+    summarize(win_rate = mean(result == "Win"))
+   ftstat_simulation[[i]] <- ftpct_summary[[2]][[2]] - ftpct_summary[[2]][[1]]
+}
+
+view(ftstat_simulation)
+```
+
+```{r}
+ftstat_simulated <- tibble(ftstat_simulation = ftstat_simulation)
+
+ft_histogram(ftstat_simulated, ftstat_simulation, alpha = .4, miz_ftm_diff)
+
+p_value <- sum(ftstat_simulation >= miz_ftm_diff) / 5000
+p_value
 ```
 

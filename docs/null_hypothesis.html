@@ -168,7 +168,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#other-uses" id="toc-other-uses" class="nav-link" data-scroll-target="#other-uses">Other Uses</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -190,8 +202,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>With March Madness upon (this is being published on Friday, March 22), we are being treated to three weeks of the very best college basketball. Whether it’s a potential first-round upset or a nail-biting Final Four match-up, close games are a staple of March Madness; many argue it’s what makes the tournament so great. Free throws can often be the most decisive factor in what teams wins a close game. Or are they? While there are many clichés about the importance of a team making free throws, I am taking a closer look at whether or not free throws really do win teams games.</p>
+<section id="methods" class="level3">
+<h3 class="anchored" data-anchor-id="methods">Methods</h3>
+<p>An <a href="https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century">article</a> by the NCAA says that in 2018 teams shot, on average, 19.6 free throws and made 14. With these averages in mind, I will be testing these conditions under the null hypothesis by analyzing the relationship between the win’s of a team in an individual season and whether or not they made more than 14 free throws in a game. The goal of this test is to determine the importance, or potential lack thereof, of making free throws.</p>
+</section>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data</h3>
+<p>For this experiment, I have collected data from each regular season game from the 2017-2018 Louisiana State University (LSU) men’s basketball season. The reason for this is LSU made 13.9 per game that season, very close to the overall NCAA average. In this data set, we have opponent faced, free throws made, free throws attempted, and the outcome of the game (Win or Loss).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lsu_basketball <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"~/Downloads/LSU Basketball 2017-2018 - Sheet1.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 30 Columns: 4
 ── Column specification ────────────────────────────────────────────────────────
@@ -202,46 +223,64 @@ dbl (2): FTM, FTA
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(lsu_basketball)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 30 × 4
+   Opponent            FTM   FTA Result
+   &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; 
+ 1 Alcorn State         16    24 Win   
+ 2 Samford              19    20 Win   
+ 3 Michigan             16    23 Win   
+ 4 Notre Dame            9    12 Loss  
+ 5 Marquette            23    26 Loss  
+ 6 UT Martin            12    20 Win   
+ 7 UNCW                 17    20 Win   
+ 8 Houston              17    20 Win   
+ 9 Stephen F. Austin    23    29 Loss  
+10 Sam Houston State    11    20 Win   
+# ℹ 20 more rows</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lsu_basketball <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftpct =</span> (FTM <span class="sc">/</span> FTA),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftm_average =</span> <span class="fu">ifelse</span>(FTM <span class="sc">&gt;</span> <span class="dv">13</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftpct_average =</span> <span class="fu">ifelse</span>(ftpct <span class="sc">&gt;</span> .<span class="dv">713</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(lsu_basketball)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lsu_basketball <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftpct =</span> (FTM <span class="sc">/</span> FTA),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftm_average =</span> <span class="fu">ifelse</span>(FTM <span class="sc">&gt;</span> <span class="dv">13</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftpct_average =</span> <span class="fu">ifelse</span>(ftpct <span class="sc">&gt;</span> .<span class="dv">713</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(lsu_basketball)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Along with our initial variable, this code calculates the free throw percentage for each game. And, using the ‘ifelse’ statement within mutate, we can also see whether or not both free throws made and free throw percentage was better or worse than the national average (14 Free Throws Made and 71.4%); “Yes” denotes better than the average, “No” denotes worse than average.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ftm_summary <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ftm_average) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">win_rate =</span> <span class="fu">mean</span>(Result <span class="sc">==</span> <span class="st">"Win"</span>))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>lsu_diff <span class="ot">&lt;-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>lsu_diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ftm_summary <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ftm_average) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">win_rate =</span> <span class="fu">mean</span>(Result <span class="sc">==</span> <span class="st">"Win"</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>lsu_diff <span class="ot">&lt;-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>lsu_diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.06666667</code></pre>
 </div>
 </div>
+<p>Conveniently, of the 30 regular season games LSU played, they made more than the average 15 times and less than the average 15 times. To calculate the win percentage of games in which they shot above or below the average, we find the mean of wins when grouped by the averages. Following this, “lsu_diff” is the different between the win percentage when LSU shot above the average and when LSU shot below the average. From the data, we can see that, shockingly, LSU won more games when making a below average quantity of free throws.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ftm_simulation <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="dv">1000</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  ftm_summary <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">ftm_average =</span> <span class="fu">sample</span>(ftm_average)) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(ftm_average) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">win_rate =</span> <span class="fu">mean</span>(Result <span class="sc">==</span> <span class="st">"Win"</span>))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>   ftm_simulation[[i]] <span class="ot">&lt;-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(ftm_simulation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ftm_simulation <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="dv">5000</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ftm_summary <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">ftm_average =</span> <span class="fu">sample</span>(ftm_average)) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(ftm_average) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">win_rate =</span> <span class="fu">mean</span>(Result <span class="sc">==</span> <span class="st">"Win"</span>))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>   ftm_simulation[[i]] <span class="ot">&lt;-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(ftm_simulation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>As we are testing the condition of making free throws under the null hypothesis, the next step in our experiment is running simulations to create a null distribution. This code runs 5000 simulations, each simulation randomizing the difference of a team’s win percentage when making the average and not making the average in a hypothetical season.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ftm_simulated <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ftm_simulation =</span> ftm_simulation)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ftm_simulated, <span class="fu">aes</span>(<span class="at">x =</span> ftm_simulation)) <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">alpha =</span> .<span class="dv">4</span>, <span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> lsu_diff, <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ftm_simulated <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ftm_simulation =</span> ftm_simulation)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ftm_simulated, <span class="fu">aes</span>(<span class="at">x =</span> ftm_simulation)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">alpha =</span> .<span class="dv">4</span>, <span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> lsu_diff, <span class="at">color =</span> <span class="st">"yellow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
 ℹ Please use `after_stat(density)` instead.</code></pre>
@@ -252,46 +291,125 @@ dbl (2): FTM, FTA
 <div class="cell-output-display">
 <p><img src="null_hypothesis_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ftpct_summary <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ftpct_average) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">win_ratepct =</span> <span class="fu">mean</span>(Result <span class="sc">==</span> <span class="st">"Win"</span>))</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>ftpct_diff <span class="ot">&lt;-</span> ftpct_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftpct_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ftpct_diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="fu">sum</span>(ftm_simulation <span class="sc">&gt;=</span> lsu_diff) <span class="sc">/</span> <span class="dv">5000</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.08597285</code></pre>
+<pre><code>[1] 0.7702</code></pre>
 </div>
 </div>
+<p>The final step is to plot our null distribution alongside our value for LSU’s win differential using a vertical line. When looking at the graph, we can see the vertical line fits right with the null distribution, suggesting that the chance of LSU’s win correlation with free throws is certainly possible under null conditions. We can find a mathematical value for this using the p-value, which equals .772. This is a gigantic p-value that means that 77.2% of the time would we expect to see this win differential under null conditions, meaning we absolutely can not reject the null hypothesis. To interpret this in context of basketball statistics, we can conclude that making more than the average number of free throws in a game may not do much to a team’s probability of winning games.</p>
+</section>
+<section id="other-uses" class="level3">
+<h3 class="anchored" data-anchor-id="other-uses">Other Uses</h3>
+<p>While free throws made were not much a factor in LSU winning or losing games, we can use the code up above to see if other variables may have a greater impact on determining the results of LSU games by replacing free throws made with a different variable. In this case, I use free throw percentage, and its relation to the national average, to see if that has a greater correlation with game results.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ftpct_simulation <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="dv">1000</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  ftpct_summary <span class="ot">&lt;-</span> lsu_basketball <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">ftpct_average =</span> <span class="fu">sample</span>(ftpct_average)) <span class="sc">|&gt;</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(ftpct_average) <span class="sc">|&gt;</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">win_rate =</span> <span class="fu">mean</span>(Result <span class="sc">==</span> <span class="st">"Win"</span>))</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>   ftpct_simulation[[i]] <span class="ot">&lt;-</span> ftpct_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftpct_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(ftpct_simulation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ftpct_simulated <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ftpct_simulation =</span> ftpct_simulation)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ftpct_simulated, <span class="fu">aes</span>(<span class="at">x =</span> ftpct_simulation)) <span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">alpha =</span> .<span class="dv">4</span>, <span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> lsu_diff, <span class="at">color =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
 <p><img src="null_hypothesis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7996</code></pre>
+</div>
+</div>
+</section>
+<section id="results" class="level3">
+<h3 class="anchored" data-anchor-id="results">Results</h3>
+<p>Similar to the histogram comparing free throw average, we can see that LSU’s differential with free throw percentage also falls right within the null distribution. When looking at the p-value, this is evident by the huge value. This allows us to conclude that making above the national average in free throws and free throw percentage does little to impact the results of college basketball games.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ftpcts <span class="ot">&lt;-</span> <span class="cf">function</span>(data, var1, var2) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftpct =</span> {{ var1 }} <span class="sc">/</span> {{ var2 }},</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftm_average =</span> <span class="fu">ifelse</span>({{ var1 }} <span class="sc">&gt;</span> <span class="dv">13</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">ftpct_average =</span> <span class="fu">ifelse</span>(ftpct <span class="sc">&gt;</span> .<span class="dv">713</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>ftm_summary_func <span class="ot">&lt;-</span> <span class="cf">function</span>(data, var1, var2) { </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  ftm_summary <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>({{ var1 }}) <span class="sc">|&gt;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">win_rate =</span> <span class="fu">mean</span>({{ var2 }} <span class="sc">==</span> <span class="st">"Win"</span>))</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>ft_histogram <span class="ot">&lt;-</span> <span class="cf">function</span>(data, xvar, <span class="at">alpha =</span> .<span class="dv">4</span>, var) {</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> data, <span class="fu">aes</span>(<span class="at">x =</span> xvar)) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">alpha =</span> alpha, <span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> alpha) <span class="sc">+</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> {{ var }}, <span class="at">color =</span> <span class="st">"red"</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 31 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): team, result
+dbl (2): free_throws_made, free_throws_att
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 4
+   team             free_throws_made free_throws_att result
+   &lt;chr&gt;                       &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt; 
+ 1 Central Michigan               21              27 Win   
+ 2 Fordham                         7              10 Win   
+ 3 Southern                        5               9 Win   
+ 4 Michigan State                 13              18 Loss  
+ 5 Maryland                       19              23 Win   
+ 6 Western Illinois               13              20 Win   
+ 7 Arkansas                       23              33 Loss  
+ 8 California                      9              17 Loss  
+ 9 Purdue                         21              31 Win   
+10 McNeese State                   8              10 Win   
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mizzou_basketball <span class="ot">&lt;-</span> mizzou_basketball <span class="sc">|&gt;</span> <span class="fu">ftpcts</span>(<span class="at">var1 =</span> free_throws_made, <span class="at">var2 =</span> free_throws_att)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mizzou_basketball <span class="ot">&lt;-</span> mizzou_basketball <span class="sc">|&gt;</span> <span class="fu">ftpcts</span>(<span class="at">var1 =</span> free_throws_made, <span class="at">var2 =</span> free_throws_att)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ftm_summary <span class="ot">&lt;-</span> <span class="fu">ftm_summary_func</span>(mizzou_basketball, ftm_average, result)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>miz_ftm_diff <span class="ot">&lt;-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>miz_ftm_diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4681818</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ftstat_simulation <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="dv">5000</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  ftpct_summary <span class="ot">&lt;-</span> mizzou_basketball <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">ftm_average =</span> <span class="fu">sample</span>(ftm_average)) <span class="sc">|&gt;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(ftm_average) <span class="sc">|&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">win_rate =</span> <span class="fu">mean</span>(result <span class="sc">==</span> <span class="st">"Win"</span>))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>   ftstat_simulation[[i]] <span class="ot">&lt;-</span> ftpct_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftpct_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(ftstat_simulation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ftstat_simulated <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ftstat_simulation =</span> ftstat_simulation)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ft_histogram</span>(ftstat_simulated, ftstat_simulation, <span class="at">alpha =</span> .<span class="dv">4</span>, miz_ftm_diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="null_hypothesis_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="fu">sum</span>(ftstat_simulation <span class="sc">&gt;=</span> miz_ftm_diff) <span class="sc">/</span> <span class="dv">5000</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0152</code></pre>
+</div>
 </div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
