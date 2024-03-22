@@ -14,15 +14,15 @@ library(readr)
 
 ## Introduction
 
-With March Madness upon (this is being published on Friday, March 22), we are being treated to three weeks of the very best college basketball. Whether it's a potential first-round upset or a nail-biting Final Four match-up, close games are a staple of March Madness; many argue it's what makes the tournament so great. Free throws can often be the most decisive factor in what teams wins a close game. Or are they? While there are many clichés about the importance of a team making free throws, I am taking a closer look at whether or not free throws really do win teams games. 
+With March Madness upon us (this is being published on Friday, March 22), we are being treated to three weeks of the very best college basketball. Whether it's a potential first-round upset or a nail-biting Final Four match-up, close games are a staple of March Madness; many argue it's what makes the tournament so great. Free throws can often be the most decisive factor in what team wins a close game. Or are they? While there are many clichés about the importance of a team making free throws, I take a closer look at whether or not free throws really do win games. 
 
 ### Methods
 
-An [article](https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century) by the NCAA says that in 2018 teams shot, on average, 19.6 free throws and made 14. With these averages in mind, I will be testing these conditions under the null hypothesis by analyzing the relationship between the win's of a team in an individual season and whether or not they made more than 14 free throws in a game. The goal of this test is to determine the importance, or potential lack thereof, of making free throws.
+An [article](https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century) by the NCAA says that in 2018 teams shot, on average, 19.6 free throws and made 14. With these averages in mind, I will be testing these conditions under the null hypothesis by analyzing the relationship between the team wins in an individual season and if they made more than 14 free throws in a game. The goal of this test is to determine the importance, or potential lack thereof, of making free throws.
 
 ### Data
 
-For this experiment, I have collected data from each regular season game from the 2017-2018 Louisiana State University (LSU) men's basketball season. The reason for this is LSU made 13.9 per game that season, very close to the overall NCAA average. In this data set, we have opponent faced, free throws made, free throws attempted, and the outcome of the game (Win or Loss).
+For this experiment, I have collected data of each regular season game from the 2017-2018 Louisiana State University (LSU) men's basketball season. The reason for this is LSU made 13.9 per game that season, very close to the overall NCAA average. In this data set, we have opponent faced, free throws made, free throws attempted, and the outcome of the game (Win or Loss).
 
 ```{r, echo = FALSE}
 lsu_basketball <- read_csv("~/Downloads/LSU Basketball 2017-2018 - Sheet1.csv")
@@ -49,7 +49,7 @@ lsu_diff <- ftm_summary[[2]][[2]] - ftm_summary[[2]][[1]]
 lsu_diff
 ```
 
-Conveniently, of the 30 regular season games LSU played, they made more than the average 15 times and less than the average 15 times. To calculate the win percentage of games in which they shot above or below the average, we find the mean of wins when grouped by the averages. Following this, "lsu_diff" is the different between the win percentage when LSU shot above the average and when LSU shot below the average. From the data, we can see that, shockingly, LSU won more games when making a below average quantity of free throws. 
+Conveniently, of the 30 regular season games LSU played, they made more than the average 15 times and less than the average 15 times. To calculate the win percentage of games in which they shot above or below the average, we find the mean of wins when grouped by the averages. Following this, 'lsu_diff' is the difference between the win percentage when LSU shot above the average and when LSU shot below the average. From the data, we can see that, shockingly, LSU won more games when making a below average quantity of free throws. 
 
 ```{r}
 ftm_simulation <- vector("double", 5000)
@@ -72,13 +72,14 @@ ftm_simulated <- tibble(ftm_simulation = ftm_simulation)
 ggplot(ftm_simulated, aes(x = ftm_simulation)) +
   geom_histogram(aes(y = ..density..), alpha = .4, fill = "black") +
   geom_density(fill = "purple", alpha = .3) +
-  geom_vline(xintercept = lsu_diff, color = "yellow")
+  geom_vline(xintercept = lsu_diff, color = "yellow") +
+  labs(title = "Free Throws Made Null Distribution", x = "FTM Differential", y = "Density")
 
 p_value <- sum(ftm_simulation >= lsu_diff) / 5000
 p_value
 ```
 
-The final step is to plot our null distribution alongside our value for LSU's win differential using a vertical line. When looking at the graph, we can see the vertical line fits right with the null distribution, suggesting that the chance of LSU's win correlation with free throws is certainly possible under null conditions. We can find a mathematical value for this using the p-value, which equals .772. This is a gigantic p-value that means that 77.2% of the time would we expect to see this win differential under null conditions, meaning we absolutely can not reject the null hypothesis. To interpret this in context of basketball statistics, we can conclude that making more than the average number of free throws in a game may not do much to a team's probability of winning games. 
+The final step is to plot our null distribution alongside our value for LSU's win differential using a vertical line. When looking at the graph, we can see the vertical line fits right with the null distribution, suggesting that the chance of LSU's win correlation with free throws is certainly possible under null conditions. We can find a mathematical value for this using the p-value. Seen up above, this is a gigantic p-value that means that more than 75% of the time would we expect to see this win differential under null conditions, meaning we absolutely can not reject the null hypothesis. To interpret this in context of basketball statistics, we can conclude that making more than the average number of free throws in a game may not do much to a team's probability of winning games. 
 
 ### Other Uses
 
@@ -112,7 +113,8 @@ ftpct_simulated <- tibble(ftpct_simulation = ftpct_simulation)
 ggplot(ftpct_simulated, aes(x = ftpct_simulation)) +
   geom_histogram(aes(y = ..density..), alpha = .4, fill = "black") +
   geom_density(fill = "purple", alpha = .3) +
-  geom_vline(xintercept = lsu_diff, color = "yellow")
+  geom_vline(xintercept = lsu_diff, color = "yellow") +
+  labs(title = "Free Throw Percentage Null Distribution", x = "FT% Result Differential", y = "Density")
 p_value <- sum(ftpct_simulation >= ftpct_diff) / 5000
 p_value
 ```
@@ -120,6 +122,11 @@ p_value
 ### Results
 
 Similar to the histogram comparing free throw average, we can see that LSU's differential with free throw percentage also falls right within the null distribution. When looking at the p-value, this is evident by the huge value. This allows us to conclude that making above the national average in free throws and free throw percentage does little to impact the results of college basketball games. 
+
+
+### Try it Yourself!
+
+Following my analysis of the 2017-18 LSU season, I was shocked by the lack of relationship between free throw metrics and the outcomes of games. There may be a few ways to explain this; namely, as referenced by the NCAA [article](https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century), the amount of free throws teams are shooting is decreasing. As basketball has become more spread out, thanks to a revolution of the Three-Pointer led by Stephen Curry, teams are spending less time near the basketball and, thus, decrease their chances of getting fouled. Luckily, we can run tests for any team in any season. To do this, I have created a series of functions (seen below) that hasten the coding process. These functions condense the code and allow for the user to include what ever variables they want, albeit with a few conditions. With these functions, I will walk through an application of how to use these function using data from the 2007-08 University of Missouri (colloquially known as "Mizzou") men's basketball regular season.
 
 ```{r}
 ftpcts <- function(data, var1, var2) {
@@ -139,9 +146,13 @@ ft_histogram <- function(data, xvar, alpha = .4, var) {
   ggplot(data = data, aes(x = xvar)) +
     geom_histogram(aes(y = ..density..), alpha = alpha, fill = "black") +
     geom_density(fill = "blue", alpha = alpha) +
-    geom_vline(xintercept = {{ var }}, color = "red")
+    geom_vline(xintercept = {{ var }}, color = "red") 
     
 }
+
+p_value <- function(var1, var2) {
+  sum({{ var1 }} >= {{ var2 }}) / 5000
+} 
 ```
 
 ```{r, echo = FALSE}
@@ -153,13 +164,17 @@ print(mizzou_basketball)
 mizzou_basketball <- mizzou_basketball |> ftpcts(var1 = free_throws_made, var2 = free_throws_att)
 ```
 
-```{r}
-mizzou_basketball <- mizzou_basketball |> ftpcts(var1 = free_throws_made, var2 = free_throws_att)
+Running 'ftpcts' creates three variables: free throw percentage, whether or not Mizzou scored more free throws than the national average in a game, and whether or not their free throw percentage was higher than the national average in a game. Important to note is that, while 10 years earlier than LSU's season, I have still included the 2017-18 averages when calculating Mizzou's free throw averages. To change this is easy: simply modify the values in the 'ifelse' statements in the functions to better correspond to the season of interest. 
 
+```{r}
 ftm_summary <- ftm_summary_func(mizzou_basketball, ftm_average, result)
 miz_ftm_diff <- ftm_summary[[2]][[2]] - ftm_summary[[2]][[1]]
 miz_ftm_diff
+```
 
+Using 'ftm_summary_func', we calculate the win proportion of when Mizzou scores more or less than the average number of free throws in a game. Mizzou only exceeded the average in 10 of 31 games, but they won nearly every in which they did so; similarly, in the 21 games the Tigers did not score the average, they lost a majority of games. We see this when creating 'miz_ftm_diff', which is the difference in win proportions. Unlike LSU, Mizzou's win differential is large (.468), suggesting that making free throws may have been a more important factor in determining the outcome of their games. One important note in this function is that while "var1" can be any variable, "var2" must denote the result of a game, typically "Win" or "Loss".
+
+```{r}
 ftstat_simulation <- vector("double", 5000)
 for(i in 1:5000) {
   ftpct_summary <- mizzou_basketball |>
@@ -172,12 +187,21 @@ for(i in 1:5000) {
 view(ftstat_simulation)
 ```
 
+Unfortunately, there is no function for the for loop creating random simulations that make up the null distribution, but the code is relatively straightforward. The variable, 'ftm_average' is created when running the 'ftpcts' function, but the variable 'result' may have to be modified if it has a different name in your data set. By running this for loop, we are able to create our null distribution and, using one more function, plot this distribution against our variable of choice and find a p-value. 
+
+
 ```{r}
 ftstat_simulated <- tibble(ftstat_simulation = ftstat_simulation)
 
 ft_histogram(ftstat_simulated, ftstat_simulation, alpha = .4, miz_ftm_diff)
 
-p_value <- sum(ftstat_simulation >= miz_ftm_diff) / 5000
-p_value
+p_value(ftstat_simulation, miz_ftm_diff)
 ```
 
+### Results
+
+After running our simulations and creating 'ftstat_simulation', we can make these results a tibble, in this case 'ftstat_simulated', and then put it into a plotting function. With our tibble (which functions as our dataset) created, we input our x variable of choice, in this case our win differential in each of 5000 simulations, along with our x-intercept line of Mizzou's win differential. In this example, we can see that, unlike LSU, Mizzou's win differential barely falls within the distribution, meaning there were few results in the simulation more extreme. When we run the p-value function, we return a value smaller less than 0.05, meaning we can reject our null hypothesis. With this, our model suggests that free throws attempted is a statistically significant variable when influencing the result of an individual basketball game. 
+
+## Conclusion
+
+The goal of this project was to create a model that tested the importance of making free throws in college basketball while also providing a function that allows for further analysis of this topic. The results of this project show that variability in free throw statistics and game results greatly differ. With this, we can both struggle to make wider conclusions about free throws but also notice potential trends about the trajectory of college basketball. Primarily, as the game of basketball has evolved away from the paint in favor of three-point shots, teams are shooting less free throws than ever. As three-pointers increase their effectiveness in influencing games, the importance of the free throw may be dwindling. However, asking any basketball coach about the importance of free throws will certainly yield a response favoring making shots from the charity stripe.

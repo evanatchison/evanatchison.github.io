@@ -178,7 +178,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#other-uses" id="toc-other-uses" class="nav-link" data-scroll-target="#other-uses">Other Uses</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link" data-scroll-target="#try-it-yourself">Try it Yourself!</a></li>
+  <li><a href="#results-1" id="toc-results-1" class="nav-link" data-scroll-target="#results-1">Results</a></li>
   </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -204,14 +207,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>With March Madness upon (this is being published on Friday, March 22), we are being treated to three weeks of the very best college basketball. Whether it’s a potential first-round upset or a nail-biting Final Four match-up, close games are a staple of March Madness; many argue it’s what makes the tournament so great. Free throws can often be the most decisive factor in what teams wins a close game. Or are they? While there are many clichés about the importance of a team making free throws, I am taking a closer look at whether or not free throws really do win teams games.</p>
+<p>With March Madness upon us (this is being published on Friday, March 22), we are being treated to three weeks of the very best college basketball. Whether it’s a potential first-round upset or a nail-biting Final Four match-up, close games are a staple of March Madness; many argue it’s what makes the tournament so great. Free throws can often be the most decisive factor in what team wins a close game. Or are they? While there are many clichés about the importance of a team making free throws, I take a closer look at whether or not free throws really do win games.</p>
 <section id="methods" class="level3">
 <h3 class="anchored" data-anchor-id="methods">Methods</h3>
-<p>An <a href="https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century">article</a> by the NCAA says that in 2018 teams shot, on average, 19.6 free throws and made 14. With these averages in mind, I will be testing these conditions under the null hypothesis by analyzing the relationship between the win’s of a team in an individual season and whether or not they made more than 14 free throws in a game. The goal of this test is to determine the importance, or potential lack thereof, of making free throws.</p>
+<p>An <a href="https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century">article</a> by the NCAA says that in 2018 teams shot, on average, 19.6 free throws and made 14. With these averages in mind, I will be testing these conditions under the null hypothesis by analyzing the relationship between the team wins in an individual season and if they made more than 14 free throws in a game. The goal of this test is to determine the importance, or potential lack thereof, of making free throws.</p>
 </section>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>For this experiment, I have collected data from each regular season game from the 2017-2018 Louisiana State University (LSU) men’s basketball season. The reason for this is LSU made 13.9 per game that season, very close to the overall NCAA average. In this data set, we have opponent faced, free throws made, free throws attempted, and the outcome of the game (Win or Loss).</p>
+<p>For this experiment, I have collected data of each regular season game from the 2017-2018 Louisiana State University (LSU) men’s basketball season. The reason for this is LSU made 13.9 per game that season, very close to the overall NCAA average. In this data set, we have opponent faced, free throws made, free throws attempted, and the outcome of the game (Win or Loss).</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 30 Columns: 4
@@ -260,7 +263,7 @@ dbl (2): FTM, FTA
 <pre><code>[1] -0.06666667</code></pre>
 </div>
 </div>
-<p>Conveniently, of the 30 regular season games LSU played, they made more than the average 15 times and less than the average 15 times. To calculate the win percentage of games in which they shot above or below the average, we find the mean of wins when grouped by the averages. Following this, “lsu_diff” is the different between the win percentage when LSU shot above the average and when LSU shot below the average. From the data, we can see that, shockingly, LSU won more games when making a below average quantity of free throws.</p>
+<p>Conveniently, of the 30 regular season games LSU played, they made more than the average 15 times and less than the average 15 times. To calculate the win percentage of games in which they shot above or below the average, we find the mean of wins when grouped by the averages. Following this, ‘lsu_diff’ is the difference between the win percentage when LSU shot above the average and when LSU shot below the average. From the data, we can see that, shockingly, LSU won more games when making a below average quantity of free throws.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ftm_simulation <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="dv">5000</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
@@ -280,7 +283,8 @@ dbl (2): FTM, FTA
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ftm_simulated, <span class="fu">aes</span>(<span class="at">x =</span> ftm_simulation)) <span class="sc">+</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">alpha =</span> .<span class="dv">4</span>, <span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"purple"</span>, <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> lsu_diff, <span class="at">color =</span> <span class="st">"yellow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> lsu_diff, <span class="at">color =</span> <span class="st">"yellow"</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Free Throws Made Null Distribution"</span>, <span class="at">x =</span> <span class="st">"FTM Differential"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
 ℹ Please use `after_stat(density)` instead.</code></pre>
@@ -294,10 +298,10 @@ dbl (2): FTM, FTA
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="fu">sum</span>(ftm_simulation <span class="sc">&gt;=</span> lsu_diff) <span class="sc">/</span> <span class="dv">5000</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7702</code></pre>
+<pre><code>[1] 0.7632</code></pre>
 </div>
 </div>
-<p>The final step is to plot our null distribution alongside our value for LSU’s win differential using a vertical line. When looking at the graph, we can see the vertical line fits right with the null distribution, suggesting that the chance of LSU’s win correlation with free throws is certainly possible under null conditions. We can find a mathematical value for this using the p-value, which equals .772. This is a gigantic p-value that means that 77.2% of the time would we expect to see this win differential under null conditions, meaning we absolutely can not reject the null hypothesis. To interpret this in context of basketball statistics, we can conclude that making more than the average number of free throws in a game may not do much to a team’s probability of winning games.</p>
+<p>The final step is to plot our null distribution alongside our value for LSU’s win differential using a vertical line. When looking at the graph, we can see the vertical line fits right with the null distribution, suggesting that the chance of LSU’s win correlation with free throws is certainly possible under null conditions. We can find a mathematical value for this using the p-value. Seen up above, this is a gigantic p-value that means that more than 75% of the time would we expect to see this win differential under null conditions, meaning we absolutely can not reject the null hypothesis. To interpret this in context of basketball statistics, we can conclude that making more than the average number of free throws in a game may not do much to a team’s probability of winning games.</p>
 </section>
 <section id="other-uses" class="level3">
 <h3 class="anchored" data-anchor-id="other-uses">Other Uses</h3>
@@ -310,13 +314,17 @@ dbl (2): FTM, FTA
 <p><img src="null_hypothesis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7996</code></pre>
+<pre><code>[1] 0.7986</code></pre>
 </div>
 </div>
 </section>
 <section id="results" class="level3">
 <h3 class="anchored" data-anchor-id="results">Results</h3>
 <p>Similar to the histogram comparing free throw average, we can see that LSU’s differential with free throw percentage also falls right within the null distribution. When looking at the p-value, this is evident by the huge value. This allows us to conclude that making above the national average in free throws and free throw percentage does little to impact the results of college basketball games.</p>
+</section>
+<section id="try-it-yourself" class="level3">
+<h3 class="anchored" data-anchor-id="try-it-yourself">Try it Yourself!</h3>
+<p>Following my analysis of the 2017-18 LSU season, I was shocked by the lack of relationship between free throw metrics and the outcomes of games. There may be a few ways to explain this; namely, as referenced by the NCAA <a href="https://www.ncaa.com/news/basketball-men/article/2018-11-29/college-basketballs-best-free-throw-shooting-teams-century">article</a>, the amount of free throws teams are shooting is decreasing. As basketball has become more spread out, thanks to a revolution of the Three-Pointer led by Stephen Curry, teams are spending less time near the basketball and, thus, decrease their chances of getting fouled. Luckily, we can run tests for any team in any season. To do this, I have created a series of functions (seen below) that hasten the coding process. These functions condense the code and allow for the user to include what ever variables they want, albeit with a few conditions. With these functions, I will walk through an application of how to use these function using data from the 2007-08 University of Missouri (colloquially known as “Mizzou”) men’s basketball regular season.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ftpcts <span class="ot">&lt;-</span> <span class="cf">function</span>(data, var1, var2) {</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
@@ -335,9 +343,13 @@ dbl (2): FTM, FTA
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> data, <span class="fu">aes</span>(<span class="at">x =</span> xvar)) <span class="sc">+</span></span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">alpha =</span> alpha, <span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> alpha) <span class="sc">+</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> {{ var }}, <span class="at">color =</span> <span class="st">"red"</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> {{ var }}, <span class="at">color =</span> <span class="st">"red"</span>) </span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="cf">function</span>(var1, var2) {</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>({{ var1 }} <span class="sc">&gt;=</span> {{ var2 }}) <span class="sc">/</span> <span class="dv">5000</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>} </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
@@ -370,15 +382,17 @@ dbl (2): free_throws_made, free_throws_att
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mizzou_basketball <span class="ot">&lt;-</span> mizzou_basketball <span class="sc">|&gt;</span> <span class="fu">ftpcts</span>(<span class="at">var1 =</span> free_throws_made, <span class="at">var2 =</span> free_throws_att)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Running ‘ftpcts’ creates three variables: free throw percentage, whether or not Mizzou scored more free throws than the national average in a game, and whether or not their free throw percentage was higher than the national average in a game. Important to note is that, while 10 years earlier than LSU’s season, I have still included the 2017-18 averages when calculating Mizzou’s free throw averages. To change this is easy: simply modify the values in the ‘ifelse’ statements in the functions to better correspond to the season of interest.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mizzou_basketball <span class="ot">&lt;-</span> mizzou_basketball <span class="sc">|&gt;</span> <span class="fu">ftpcts</span>(<span class="at">var1 =</span> free_throws_made, <span class="at">var2 =</span> free_throws_att)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ftm_summary <span class="ot">&lt;-</span> <span class="fu">ftm_summary_func</span>(mizzou_basketball, ftm_average, result)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>miz_ftm_diff <span class="ot">&lt;-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>miz_ftm_diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ftm_summary <span class="ot">&lt;-</span> <span class="fu">ftm_summary_func</span>(mizzou_basketball, ftm_average, result)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>miz_ftm_diff <span class="ot">&lt;-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">2</span>]] <span class="sc">-</span> ftm_summary[[<span class="dv">2</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>miz_ftm_diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4681818</code></pre>
 </div>
+</div>
+<p>Using ‘ftm_summary_func’, we calculate the win proportion of when Mizzou scores more or less than the average number of free throws in a game. Mizzou only exceeded the average in 10 of 31 games, but they won nearly every in which they did so; similarly, in the 21 games the Tigers did not score the average, they lost a majority of games. We see this when creating ‘miz_ftm_diff’, which is the difference in win proportions. Unlike LSU, Mizzou’s win differential is large (.468), suggesting that making free throws may have been a more important factor in determining the outcome of their games. One important note in this function is that while “var1” can be any variable, “var2” must denote the result of a game, typically “Win” or “Loss”.</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ftstat_simulation <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="dv">5000</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>) {</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  ftpct_summary <span class="ot">&lt;-</span> mizzou_basketball <span class="sc">|&gt;</span></span>
@@ -390,6 +404,7 @@ dbl (2): free_throws_made, free_throws_att
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(ftstat_simulation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Unfortunately, there is no function for the for loop creating random simulations that make up the null distribution, but the code is relatively straightforward. The variable, ‘ftm_average’ is created when running the ‘ftpcts’ function, but the variable ‘result’ may have to be modified if it has a different name in your data set. By running this for loop, we are able to create our null distribution and, using one more function, plot this distribution against our variable of choice and find a p-value.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ftstat_simulated <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ftstat_simulation =</span> ftstat_simulation)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -398,17 +413,24 @@ dbl (2): free_throws_made, free_throws_att
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="null_hypothesis_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="null_hypothesis_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>p_value <span class="ot">&lt;-</span> <span class="fu">sum</span>(ftstat_simulation <span class="sc">&gt;=</span> miz_ftm_diff) <span class="sc">/</span> <span class="dv">5000</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p_value</span>(ftstat_simulation, miz_ftm_diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0152</code></pre>
+<pre><code>[1] 0.0132</code></pre>
 </div>
 </div>
-
-
 </section>
+<section id="results-1" class="level3">
+<h3 class="anchored" data-anchor-id="results-1">Results</h3>
+<p>After running our simulations and creating ‘ftstat_simulation’, we can make these results a tibble, in this case ‘ftstat_simulated’, and then put it into a plotting function. With our tibble (which functions as our dataset) created, we input our x variable of choice, in this case our win differential in each of 5000 simulations, along with our x-intercept line of Mizzou’s win differential. In this example, we can see that, unlike LSU, Mizzou’s win differential barely falls within the distribution, meaning there were few results in the simulation more extreme. When we run the p-value function, we return a value smaller less than 0.05, meaning we can reject our null hypothesis. With this, our model suggests that free throws attempted is a statistically significant variable when influencing the result of an individual basketball game.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The goal of this project was to create a model that tested the importance of making free throws in college basketball while also providing a function that allows for further analysis of this topic. The results of this project show that variability in free throw statistics and game results greatly differ. With this, we can both struggle to make wider conclusions about free throws but also notice potential trends about the trajectory of college basketball. Primarily, as the game of basketball has evolved away from the paint in favor of three-point shots, teams are shooting less free throws than ever. As three-pointers increase their effectiveness in influencing games, the importance of the free throw may be dwindling. However, asking any basketball coach about the importance of free throws will certainly yield a response favoring making shots from the charity stripe.</p>
+
+
 </section>
 
 </main> <!-- /main -->
