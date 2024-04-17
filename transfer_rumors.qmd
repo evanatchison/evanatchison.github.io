@@ -1,0 +1,173 @@
+---
+title: "Analyzing Media Coverage of Soccer Transfer Rumors"
+sidebar: false
+format: 
+  html: default
+editor_options: 
+  chunk_output_type: console
+---
+```{r, echo = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(dplyr)
+library(treemap)
+library(d3treeR)
+library(readr)
+library(gt)
+library(gridExtra)
+library(gtable)
+```
+
+
+```{r, echo = FALSE}
+transfer_headlines <- read_csv("~/Downloads/transfer_rumors - Sheet1.csv")
+```
+
+## Introduction
+
+For European soccer fans, the summer months can be agonizing as the club stops in favor of international tournaments and much needed breaks for players coming off of a grueling 10-month season. Yet, even as matches stop, business doesn't. In June, July, and August, the soccer world becomes one big auction house, as clubs look to strength their squads and certain players, both enthusiastically and unenthusiastically, look for new teams to play for. With interest over the next star signing a club can make, news publications have mastered how to report transfers. A mixture of fact and often fiction, daily reports about potential player signings and departures feed fans in need of soccer-related content. But how are transfers and transfer rumors reported on? Using all transfer-related articles from 90min.com, a global soccer news outlet with newsrooms in four continents, from May 2020 to August 2023, I will analyze trends in transfer reporting from what leagues are reported on most to common phrases you can expect to see beginning a headline.
+
+#### Dataset Additions
+
+The original data set, taken from [Kaggle](https://www.kaggle.com/datasets/crxxom/football-transfer-news-for-nlp), includes 4 columns: the title, publishing date, link to the article, and contents of the article. However, to add layers of specificity to the data, I have added a few variables to this data set using mutate and stringr functions. Along with singling out both the date and month, I have also add a variable called "club" which denotes the first club listed in the article headline. Important to note is that I have added each club from Europe's "Top 5 Leagues", along with a few American and Saudi Arabian clubs who have had prominent transfer involvement, such as Inter Miami's acquisition of Lionel Messi and Al Nassr's acquisition of Cristiano Ronaldo. I also grouped together individual clubs into their domestic league, meaning we have the English Premier League, La Liga (Spain), Serie A (Italy), Bundesliga (Germany), Ligue 1 (France), MLS (USA/Canada), and Saudi Pro League (Saudi Arabia).
+
+```{r}
+transfer_headlines <- transfer_headlines |>
+  mutate(month = str_extract(date, "[A-Za-z]{3}"),
+         year = str_extract(date, "\\d{4}"),
+  club = str_extract(title, "Arsenal|Aston Villa|Bournemouth|Brentford|Brighton|Burnley|Chelsea|Crystal Palace|Everton|Fulham|Liverpool|Luton Town|Man(chester)* City|Man(chester)* U(ni)*t(e)*d|Newcastle|Nottingham Forest|Sheffield United|Tottenham|West Ham|Wolves|Leeds|Leicester|Southampton|Watford|Alaves|Almeria|Athletic Bilbao|Atletico Madrid|Barcelona|Real Betis|Cadiz|Celta Vigo|Getafe|Girona|Granada|Las Palmas|Mallorca|Osasuna|Rayo Vallecano|Real Madrid|Real Sociedad|Sevilla|Valencia|Villarreal|Bayern Munich|Borussia Dortmund|RB Leipzig|Union Berlin|Freiburg|Bayer Leverkusen|Eintracht Frankfurt|Wolfsburg|Mainz|Borussia Monchengladbach|Koln|Hoffenheim|Werder Bremen|Bochum|Augsburg|Stuttgart|Darmstadt|Heidenheim|AC Milan|Atalanta|Bologna|Cagliari|Empoli|Fiorentina|Genoa|Frosinone|Hellas Verona|Inter Milan|Inter |Juventus|Lazio|Leece|Monza|Napoli|Roma|Salernitana|Sassuolo|Torino|Udinese|Brest|Clermont|Le Havre|Lens|Lille|Lorient|Lyon|Marseille|Metz|Monaco|Montpellier|Nantes|Nice|Paris Saint-Germain|PSG|Reims|Rennes|Strasbourg|Toulouse|Al Nassr|Al Hilal|Al Ettifaq|Al Ahli|Saudi Arabia|Saudi Pro League|Inter Miami|LA Galaxy|MLS"),
+         league = case_match(club, c("Arsenal", "Aston Villa","Bournemouth", "Brentford", "Brighton", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Fulham", "Liverpool", "Luton Town", "Man City", "Man Utd", "Newcastle", "Nottingham Forest", "Sheffield United", "Tottenham", "West Ham", "Wolves", "Leeds", "Leicester", "Southampton", "Watford", "Manchester United", "Manchester City") ~ "Premier League", 
+                             c("Alaves", "Almeria", "Athletic Bilbao", "Atletico Madrid", "Barcelona", "Real Betis", "Cadiz", "Celta Vigo", "Getafe", "Girona", "Granada", "Las Palmas", "Mallorca", "Osasuna", "Rayo Vallecano", "Real Madrid", "Real Sociedad", "Sevilla", "Valencia", "Villarreal") ~ "La Liga", 
+         c("Bayern Munich", "Borussia Dortmund", "RB Leipzig", "Union Berlin", "Freiburg", "Bayer Leverkusen", "Eintracht Frankfurt", "Wolfsburg", "Mainz", "Borussia Monchengladbach", "Koln", "Hoffenheim", "Werder Bremen", "Bochum", "Augsburg", "Stuttgart", "Darmstadt", "Heidenheim") ~ "Bundesliga",
+         c("AC Milan", "Atalanta", "Bologna", "Cagliari", "Empoli", "Fiorentina", "Genoa", "Frosinone", "Hellas Verona", "Inter ", "Juventus", "Lazio", "Leece", "Monza", "Napoli", "Roma", "Salernitana", "Sassuolo", "Torino", "Udinese") ~ "Serie A",
+         c("Brest", "Clermont", "Le Havre", "Lens", "Lille", "Lorient", "Lyon", "Marseille", "Metz", "Monaco", "Montpellier", "Nantes", "Nice", "Paris Saint-Germain", "PSG", "Reims", "Rennes", "Strasbourg", "Toulouse") ~ "Ligue 1",
+         c("Al Nassr", "Al Hilal", "Al Ettifaq", "Al Ahli", "Saudi Arabia", "Saudi Pro League") ~ "Saudi Pro League",
+         c("Inter Miami", "LA Galaxy", "MLS") ~ "MLS")) 
+```
+
+```{r, echo = FALSE}
+ggplot(transfer_headlines, aes(x = month, fill = league)) +
+  geom_bar() +
+  facet_wrap(~year) +
+   scale_x_discrete(limits = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+  labs(title = "Number of Headlines per Month", x = "Month", y = "Headlines", fill = "League") +
+  theme_clean() +
+  theme(axis.text.x=element_text(size=7))
+```
+
+```{r, results = FALSE}
+grid_2023 <- transfer_headlines |>
+  mutate(player = str_extract(title, "Caicedo|Rice|Bellingham|Kane|Neymar|Gvardiol|Havertz|Kolo Muani|Hojlund|Szoboszlai")) |>
+  filter(year == 2023) |>
+  filter(!is.na(player)) |>
+  ggplot(aes(x = player, fill = league)) +
+  geom_bar() +
+  scale_x_discrete(limits = c("Caicedo", "Rice", "Bellingham", "Kane", "Neymar","Gvardiol", "Havertz","Kolo Muani", "Hojlund", "Szoboszlai")) +
+  labs(title = "2023 Summer Transfers", subtitle = "From Left to Right: Most Expensive Transfer Fee", x = "Player", y = "Number of Headlines", fill = "League") +
+  theme_fivethirtyeight() +
+  theme(axis.text.x=element_text(size=10))
+```
+
+```{r, echo = FALSE}
+grid_2022<- transfer_headlines |>
+  mutate(month = str_extract(date, "[A-Za-z]{3}"),
+    year = str_extract(date, "\\d{4}"),
+         player = str_extract(title, "Antony|Fofana|Tchouameni|Nunez|Casemiro|Isak|De Ligt|Cucurella|Haaland|Richarlison|Raphinha")) |>
+  filter(year == 2022) |>
+  filter(!is.na(player)) |>
+  ggplot(aes(x = player, fill = league)) +
+  geom_bar() +
+  scale_x_discrete(limits = c("Antony", "Fofana", "Tchouameni", "Nunez", "Casemiro", "Isak", "De Ligt","Cucurella", "Haaland", "Richarlison", "Raphinha")) +
+    labs(title = "2022 Summer Transfers", subtitle = "From Left to Right: Most Expensive Transfer Fee", x = "Player", y = "Number of Headlines", fill = "League") +
+  theme_fivethirtyeight() +
+  theme(axis.text.x=element_text(size=8.5))
+```
+
+```{r, echo = FALSE}
+grid_2021 <- transfer_headlines |>
+  mutate(month = str_extract(date, "[A-Za-z]{3}"),
+    year = str_extract(date, "\\d{4}"),
+         player = str_extract(title, "Grealish|Lukaku|Sancho|Hakimi|White|Upamecano|Varane|Buendia|Konate|Abraham")) |>
+  filter(year == 2021) |>
+  filter(!is.na(player)) |>
+  ggplot(aes(x = player, fill = league)) +
+  geom_bar() + 
+  scale_x_discrete(limits = c("Grealish", "Lukaku", "Sancho", "Hakimi", "White","Upamecano", "Varane","Buendia", "Konate", "Abraham")) +
+    labs(title = "2021 Summer Transfers", subtitle = "From Left to Right: Most Expensive Transfer Fee", x = "Player", y = "Number of Headlines", fill = "League") +
+  theme_fivethirtyeight() +
+  theme(axis.text.x=element_text(size=10))
+```
+
+```{r, echo = FALSE}
+grid_2020 <- transfer_headlines |>
+  mutate(month = str_extract(date, "[A-Za-z]{3}"),
+    year = str_extract(date, "\\d{4}"),
+         player = str_extract(title, "Havertz|Arthur|Dias|Pjanic|Chilwell|Werner|Osimhen|Partey|Icardi|Sane")) |>
+  filter(year == 2020) |>
+  filter(!is.na(player)) |>
+  ggplot(aes(x = player, fill = league)) +
+  geom_bar() +
+  scale_x_discrete(limits = c("Havertz", "Arthur", "Dias", "Pjanic", "Chilwell","Werner", "Osimhen","Partey", "Icardi", "Sane")) +
+    labs(title = "2020 Summer Transfers", subtitle = "From Left to Right: Most Expensive Transfer Fee", x = "Player", y = "Number of Headlines", fill = "League") +
+  theme_fivethirtyeight() +
+  theme(axis.text.x=element_text(size=10))
+```
+
+```{r}
+grid.arrange(grid_2023, grid_2022, grid_2021, grid_2020)
+```
+
+```{r}
+money <- transfer_headlines |>
+  mutate(includes_money_title = str_detect(title, "£|‚¬"),
+         includes_money_title = ifelse(str_detect(title, "£|‚¬"), "yes", "no"),
+         includes_money_con = str_detect(content,"£|‚¬"),
+         includes_money_con = ifelse(str_detect(content, "£|‚¬"), "yes", "no"),
+         money_amount_title = str_extract(title, "\\d*\\.?\\d[m]"),
+         money_amount_title = parse_number(money_amount_title),
+         money_amount_con = str_extract(content, "\\d*\\.?\\d[m]"),
+         money_amount_con = parse_number(money_amount_con)) 
+  
+```
+
+
+```{r}
+money |>
+  filter(includes_money_title == "yes",
+         money_amount_title <= 200) |>
+  ggplot(aes(x = money_amount_title)) +
+  geom_density() +
+  facet_wrap(~year) +
+  theme_few()
+```
+
+
+```{r}
+club_rumors <- transfer_headlines |>
+  filter(!is.na(club)) |>
+  group_by(club, league, year) |>
+  summarize(num_rumors = n())
+```
+
+```{r}
+d3tree2(
+treemap(club_rumors, 
+        index = c("year", "league", "club"),
+        vSize = c("num_rumors"), 
+        vColor = "league"),
+rootname = "Transfer Rumors by Club")
+```
+
+```{r}
+transfer_headlines |>
+  filter(is.na(club)) |>
+  mutate(first_words = str_extract(title, "^[A-Za-z\\d\\.':&]+\\s[A-Za-z\\d\\.':&]+")) |>
+  filter(!is.na(first_words)) |>
+  group_by(first_words) |>
+  summarize(phrases = n()) |>
+  slice_max(phrases, n = 20) |>
+  gt() |>
+  cols_label(first_words = "Phrase",
+             phrases = "Occurences")
+```

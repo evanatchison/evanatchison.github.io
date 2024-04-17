@@ -11,6 +11,7 @@ website:
         text: "Home"
       - sidebar:mini_project1
       - sidebar:mini_project2
+      - sidebar:mini_project3
       - sidebar:about
       
   sidebar:
@@ -27,6 +28,10 @@ website:
       title: "Null Hypothesis Test"
       contents:
         - null_hypothesis.qmd
+    - id: mini_project3
+      title: "European Soccer Transfer Rumors"
+      contents:
+        - transfer_rumors.qmd
       
   page-footer:
       left: |
